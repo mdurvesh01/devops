@@ -3,7 +3,7 @@ pipeline {
     environment {
         registry = "662519022378.dkr.ecr.us-gov-west-1.amazonaws.com"
         repo = "pmt/paymentfrontend"
-        branch = "Testing
+        branch = "Testing"
     }
     
     stages {
