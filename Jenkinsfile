@@ -14,7 +14,7 @@ pipeline {
                }
             }
         }
-        stage('Ecr login') {
+        stage('Ecr login & Push') {
             steps {
                 withAWS(credentials: 'aws-key', region: 'us-gov-west-1'){
                 sh 'aws ecr get-login-password | docker login --username AWS --password-stdin $registry'
