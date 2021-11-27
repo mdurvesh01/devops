@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     jenkins_image = docker.build "${registry}/pmt/paymentbackend:$branch-latest"
-                    docker.build JenkinsImage
+                   
                }
             }
         }
