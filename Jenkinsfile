@@ -3,22 +3,27 @@ pipeline {
     environment {
         registry = "662519022378.dkr.ecr.us-gov-west-1.amazonaws.com"
         repo = "pmt/paymentfrontend"
+        branch = "Testing"
     }
     
     stages {
         stage('Build Docker Image') {
             steps {
                 script {
-                    app = docker.build("jenkins/test")
+                    jenkins_image = docker.build "${registry}/pmt/paymentbackend:$branch-latest"
+                    docker.build JenkinsImage
                }
             }
         }
         stage('Ecr login') {
             steps {
-                withAWS(credentials: 'aws-key', region: 'us-gov-west-1'){
-                sh 'aws ecr get-login-password | docker login --username AWS --password-stdin $registry'
-                sh 'docker push 662519022378.dkr.ecr.us-gov-west-1.amazonaws.com/pmt/paymentfrontend:test'
-                }
+              script {
+                withDockerRegistry(credentialsId: 'ecr:us-gov-west-1:payment_ecr', url: "https://${registry}/pmt/paymentfrontend") {
+                  front_image.push()
+                  front_image.tag("$branch")
+                  docker.image(jenkins_image).push()
+                 }
+               }
             }
         }
     }
