@@ -18,7 +18,7 @@ pipeline {
         stage('Ecr login') {
             steps {
               script {
-                withDockerRegistry(credentialsId: 'ecr:us-gov-west-1:payment_ecr', url: "https://${registry}/pmt/paymentfrontend") {
+                withDockerRegistry(credentialsId: 'aws-key', url: "https://${registry}/pmt/paymentfrontend") {
                   front_image.push()
                   front_image.tag("$branch")
                   docker.image(jenkins_image).push()
